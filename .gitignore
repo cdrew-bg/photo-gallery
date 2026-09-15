@@ -1,0 +1,27 @@
+node_modules
+dist
+*.tsbuildinfo
+
+# env
+.env
+.env.local
+.env.*.local
+
+# test / coverage
+coverage
+coverage-ratchet
+
+# Next.js
+.next/
+out/
+next-env.d.ts
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Claude Code
+.claude/guardrails-unlock
+.agent/
+
+test-results/**

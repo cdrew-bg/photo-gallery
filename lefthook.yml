@@ -1,0 +1,37 @@
+pre-commit:
+  parallel: true
+  commands:
+    lint:
+      glob: '{app,lib}/**/*.{ts,tsx}'
+      run: |
+        pnpm exec eslint --max-warnings 0 {staged_files}
+        pnpm exec eslint --no-inline-config --config eslint.guardrails.config.mjs {staged_files}
+        pnpm exec eslint --no-inline-config --config eslint.quality.config.mjs {staged_files}
+    format:
+      glob: '*.{ts,tsx,mjs,js,json,yml,md}'
+      run: pnpm exec prettier --check {staged_files}
+    secrets:
+      run: |
+        if command -v gitleaks >/dev/null 2>&1; then
+          gitleaks protect --staged --redact --no-banner
+        else
+          echo 'gitleaks not installed; skipping local scan (CI enforces it).'
+        fi
+    skill-sync:
+      glob: '{package.json,scripts/gen-dev-skill.mjs}'
+      run: pnpm skill:check
+
+post-merge:
+  commands:
+    skill-sync:
+      run: pnpm skill:sync
+
+commit-msg:
+  commands:
+    commitlint:
+      run: |
+        if grep -qi 'co-authored-by: claude' {1}; then
+          pnpm exec commitlint --edit {1}
+        else
+          echo 'commitlint: manual commit — skipped (enforced only for AI/Claude commits).'
+        fi

@@ -1,0 +1,8 @@
+import { render, screen } from '@testing-library/react';
+import { expect, it } from 'vitest';
+import __PASCAL__Page from './page';
+
+it('renders the __KEBAB__ page heading', () => {
+  render(<__PASCAL__Page />);
+  expect(screen.getByRole('heading', { name: '__PASCAL__' })).toBeTruthy();
+});

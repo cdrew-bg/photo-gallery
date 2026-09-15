@@ -1,0 +1,8 @@
+import { render, screen } from '@testing-library/react';
+import { expect, it } from 'vitest';
+import { __PASCAL__ } from './__KEBAB__.component';
+
+it('renders the provided name', () => {
+  render(<__PASCAL__ name="seed" />);
+  expect(screen.getByText(/seed/)).toBeTruthy();
+});

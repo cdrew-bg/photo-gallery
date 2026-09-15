@@ -1,0 +1,17 @@
+{
+  "path": ["app", "lib"],
+  "pattern": "**/*.{ts,tsx}",
+  "ignore": [
+    "**/dist/**",
+    "**/node_modules/**",
+    "**/.next/**",
+    "**/*.test.ts",
+    "**/*.test.tsx",
+    "**/*.d.ts"
+  ],
+  "reporters": ["console"],
+  "gitignore": true,
+  "absolute": false,
+  "minTokens": 60,
+  "threshold": 3
+}

@@ -1,0 +1,12 @@
+import { expect, it } from 'vitest';
+import { POST } from './route';
+
+it('POST echoes the validated name', async () => {
+  const request = new Request('http://localhost/api/__KEBAB__', {
+    method: 'POST',
+    body: JSON.stringify({ name: 'seed' }),
+  });
+  const response = await POST(request);
+  const body = await response.json();
+  expect(body.name).toBe('seed');
+});

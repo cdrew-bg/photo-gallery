@@ -1,0 +1,14 @@
+# Review routing. Replace the owner below with your team or handle.
+
+# Default owner for everything not matched below.
+*                               @cdrew-bg
+
+# Enforcement estate: lint configs, custom rules, gate scripts, CI, and agent hooks are protected.
+/CLAUDE.md                      @cdrew-bg
+/eslint.config.mjs              @cdrew-bg
+/eslint.*.config.mjs            @cdrew-bg
+/tooling/eslint-rules/          @cdrew-bg
+/scripts/                       @cdrew-bg
+/.github/                       @cdrew-bg
+/.claude/hooks/                 @cdrew-bg
+/lefthook.yml                   @cdrew-bg

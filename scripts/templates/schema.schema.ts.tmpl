@@ -1,0 +1,9 @@
+import { z } from 'zod';
+
+export const __CAMEL__Schema = z
+  .object({
+    name: z.string().min(1),
+  })
+  .strict();
+
+export type __PASCAL__ = z.infer<typeof __CAMEL__Schema>;

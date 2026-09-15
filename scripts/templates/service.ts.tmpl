@@ -1,0 +1,7 @@
+export interface __PASCAL__Options {
+  readonly name: string;
+}
+
+export function __CAMEL__(options: __PASCAL__Options): string {
+  return `__PASCAL__: ${options.name}`;
+}

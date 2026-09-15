@@ -1,0 +1,7 @@
+import { NextResponse } from 'next/server';
+import { create__PASCAL__Schema } from './route.schema';
+
+export async function POST(request: Request): Promise<NextResponse> {
+  const input = create__PASCAL__Schema.parse(await request.json());
+  return NextResponse.json({ name: input.name, time: new Date().toISOString() });
+}

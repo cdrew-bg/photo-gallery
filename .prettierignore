@@ -1,0 +1,9 @@
+node_modules
+dist
+.next
+*.lock
+pnpm-lock.yaml
+coverage
+coverage-ratchet
+.claude
+next-env.d.ts

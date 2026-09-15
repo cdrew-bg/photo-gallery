@@ -1,0 +1,101 @@
+{
+  "server": "dev",
+  "tools": [
+    {
+      "name": "verify",
+      "script": "verify",
+      "description": "Run every static gate (lint, types, quality, guardrails, typed, dup, deps). Run before any PR.",
+      "mutates": false
+    },
+    {
+      "name": "run_gates",
+      "script": "check:agent",
+      "description": "Run the agent gate sweep and write a machine-readable pass/fail report to .agent/report.json.",
+      "mutates": false
+    },
+    {
+      "name": "lint",
+      "script": "lint",
+      "description": "Base eslint correctness and style across all TS/TSX.",
+      "mutates": false
+    },
+    {
+      "name": "typecheck",
+      "script": "typecheck",
+      "description": "TypeScript strict compile (tsc --noEmit); no any, no unsound casts.",
+      "mutates": false
+    },
+    {
+      "name": "quality",
+      "script": "lint:quality",
+      "description": "Duplication, cognitive complexity, and the as-unknown-as ban.",
+      "mutates": false
+    },
+    {
+      "name": "guardrails",
+      "script": "lint:guardrails",
+      "description": "AI discipline: comment ban, size and shape limits, named constants, env access, UTC dates.",
+      "mutates": false
+    },
+    {
+      "name": "typed",
+      "script": "lint:typed",
+      "description": "Type-aware: no floating or misused promises, switch exhaustiveness, only-throw-error.",
+      "mutates": false
+    },
+    {
+      "name": "dup",
+      "script": "dup",
+      "description": "jscpd copy-paste detection under 3 percent.",
+      "mutates": false
+    },
+    {
+      "name": "deps",
+      "script": "lint:deps",
+      "description": "knip: no unlisted dependencies or binaries.",
+      "mutates": false
+    },
+    {
+      "name": "deadcode",
+      "script": "lint:deadcode",
+      "description": "knip dead-code ratchet: unused counts may only shrink.",
+      "mutates": false
+    },
+    {
+      "name": "lint_gates",
+      "script": "lint:gates",
+      "description": "Keep the CLAUDE.md gate table in sync with the gate scripts.",
+      "mutates": false
+    },
+    {
+      "name": "test",
+      "script": "test",
+      "description": "Run the vitest suite once.",
+      "mutates": false
+    },
+    {
+      "name": "coverage",
+      "script": "test:coverage-ratchet",
+      "description": "Fail if line coverage falls below the recorded floor.",
+      "mutates": false
+    },
+    {
+      "name": "format_check",
+      "script": "format:check",
+      "description": "Check prettier formatting without writing.",
+      "mutates": false
+    },
+    {
+      "name": "format",
+      "script": "format",
+      "description": "Write prettier formatting across the tracked source globs.",
+      "mutates": true
+    },
+    {
+      "name": "quick",
+      "script": "check:quick",
+      "description": "Fast inner loop: typecheck plus vitest on changed files.",
+      "mutates": false
+    }
+  ]
+}

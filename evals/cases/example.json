@@ -1,0 +1,5 @@
+{
+  "name": "capital-of-france",
+  "prompt": "What is the capital of France? Answer with one word.",
+  "expectContains": "Paris"
+}

@@ -1,0 +1,6 @@
+import { expect, it } from 'vitest';
+import { __CAMEL__ } from './__KEBAB__.service';
+
+it('__CAMEL__ includes the provided name', () => {
+  expect(__CAMEL__({ name: 'seed' })).toContain('seed');
+});

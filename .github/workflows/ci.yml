@@ -1,0 +1,35 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+permissions:
+  contents: read
+
+env:
+  TZ: UTC
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: ./.github/actions/setup
+      - name: Static gates (lint, typecheck, quality, guardrails, typed, casts, gates, dup, deps)
+        run: pnpm verify
+      - name: Build
+        run: pnpm build
+      - name: Test
+        run: pnpm test
+      - name: Coverage ratchet (never lose coverage)
+        run: pnpm test:coverage-ratchet
+      - name: Dead-code ratchet (knip counts only shrink)
+        run: pnpm lint:deadcode
+      - name: Dependency audit (no high/critical advisories)
+        run: pnpm audit:deps
