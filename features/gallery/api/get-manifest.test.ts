@@ -3,6 +3,7 @@ import { getManifest } from './get-manifest.service';
 
 const validEntry = {
   id: 'abc123def456',
+  type: 'photo',
   filename: 'beach.jpg',
   ext: 'jpg',
   contentType: 'image/jpeg',

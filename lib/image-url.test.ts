@@ -4,6 +4,7 @@ import type { ImageEntry } from './manifest.schema';
 
 const entry: ImageEntry = {
   id: 'abc123def456',
+  type: 'photo',
   filename: 'beach.jpg',
   ext: 'jpg',
   contentType: 'image/jpeg',

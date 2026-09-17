@@ -3,6 +3,7 @@ import { manifestSchema } from './manifest.schema';
 
 const validEntry = {
   id: 'abc123def456',
+  type: 'photo',
   filename: 'beach.jpg',
   ext: 'jpg',
   contentType: 'image/jpeg',
@@ -22,4 +23,20 @@ it('rejects an entry with unknown keys', () => {
 
 it('rejects a non-iso takenAt', () => {
   expect(() => manifestSchema.parse([{ ...validEntry, takenAt: 'yesterday' }])).toThrow();
+});
+
+it('accepts a video entry with a duration', () => {
+  const video = {
+    ...validEntry,
+    id: 'fed654cba321',
+    type: 'video',
+    ext: 'mp4',
+    contentType: 'video/mp4',
+    durationSeconds: 12,
+  };
+  expect(manifestSchema.parse([video])).toHaveLength(1);
+});
+
+it('rejects an entry with an unknown type', () => {
+  expect(() => manifestSchema.parse([{ ...validEntry, type: 'gif' }])).toThrow();
 });

@@ -1,5 +1,6 @@
 'use client';
 
+import { formatDuration } from '@/lib/duration.service';
 import { thumbUrl } from '@/lib/image-url.service';
 import type { ImageEntry } from '@/lib/manifest.schema';
 import { useSelection } from '@/stores/selection.service';
@@ -50,6 +51,14 @@ export function PhotoTile({ entry, onOpen }: PhotoTileProps) {
             strokeLinejoin="round"
           />
         </svg>
+      ) : null}
+      {entry.type === 'video' ? (
+        <span className="pointer-events-none absolute bottom-2 right-2 flex items-center gap-1.5 rounded-full bg-black/60 px-2.5 py-1 text-xs font-medium text-white backdrop-blur-sm">
+          <svg viewBox="0 0 12 12" aria-hidden="true" className="h-2.5 w-2.5">
+            <path d="M2.5 1.5 10.5 6 2.5 10.5Z" fill="currentColor" />
+          </svg>
+          {entry.durationSeconds ? formatDuration(entry.durationSeconds) : 'Video'}
+        </span>
       ) : null}
     </li>
   );

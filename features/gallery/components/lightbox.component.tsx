@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react';
 import { downloadImage } from '@/features/gallery/api/download-image.service';
-import { imageUrl } from '@/lib/image-url.service';
+import { imageUrl, thumbUrl } from '@/lib/image-url.service';
 import type { ImageEntry } from '@/lib/manifest.schema';
 import { useNotifications } from '@/stores/notifications.service';
 
@@ -22,6 +22,31 @@ function formatTakenAt(iso: string): string {
     month: 'long',
     day: 'numeric',
   });
+}
+
+function LightboxMedia({ entry }: { readonly entry: ImageEntry }) {
+  if (entry.type === 'video') {
+    return (
+      <video
+        key={entry.id}
+        src={imageUrl(entry)}
+        controls
+        playsInline
+        preload="metadata"
+        poster={thumbUrl(entry.id)}
+        className="h-full w-full object-contain px-2 pb-4"
+      >
+        <track kind="captions" />
+      </video>
+    );
+  }
+  return (
+    <img
+      src={imageUrl(entry)}
+      alt={entry.filename}
+      className="h-full w-full object-contain px-2 pb-4"
+    />
+  );
 }
 
 export function Lightbox({ entries, index, onNavigate, onClose }: LightboxProps) {
@@ -83,11 +108,7 @@ export function Lightbox({ entries, index, onNavigate, onClose }: LightboxProps)
         </div>
       </div>
       <div className="relative min-h-0 flex-1">
-        <img
-          src={imageUrl(entry)}
-          alt={entry.filename}
-          className="h-full w-full object-contain px-2 pb-4"
-        />
+        <LightboxMedia entry={entry} />
         <div className="pointer-events-none absolute inset-y-0 left-2 flex items-center">
           <button
             type="button"

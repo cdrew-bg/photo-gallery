@@ -21,6 +21,7 @@ const flakyFetch: BinaryFetchLike = (url) =>
 function makeEntries(count: number): ImageEntry[] {
   return Array.from({ length: count }, (unused, index) => ({
     id: `id${index}`,
+    type: 'photo' as const,
     filename: `photo-${index}.jpg`,
     ext: 'jpg',
     contentType: 'image/jpeg',

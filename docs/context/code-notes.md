@@ -30,3 +30,9 @@ Keep entries short and dated. Delete an entry when the code it explains is gone.
 - _(2026-09-15)_ The unlock flag in localStorage is set inside an effect, not a lazy useState
   initializer, so the static-export HTML (always locked) matches the first client render and
   hydration stays clean.
+- _(2026-09-17)_ Videos: ingest remuxes .mov to .mp4 with `-c copy` (no re-encode — sources are
+  already H.264/AAC; the container swap is for Firefox, which refuses QuickTime). Poster frame
+  comes from ffmpeg (which auto-rotates), so its dimensions are the display dimensions. The zip
+  and single-download paths treat videos as opaque bytes — no special casing.
+- _(2026-09-17)_ Video ids hash the ORIGINAL .mov bytes, not the remuxed .mp4, so re-running
+  ingest against the same export folder stays idempotent.
