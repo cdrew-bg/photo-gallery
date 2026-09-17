@@ -19,6 +19,7 @@ export function SelectionToolbar({ entries }: SelectionToolbarProps) {
   const addNotification = useNotifications((state) => state.addNotification);
   const [progress, setProgress] = useState<ZipProgress | null>(null);
   const chosen = entries.filter((entry) => selected.has(entry.id));
+  const allSelected = chosen.length === entries.length && entries.length > 0;
   async function startZip() {
     setProgress({ done: 0, total: chosen.length, failed: [] });
     try {
@@ -32,34 +33,48 @@ export function SelectionToolbar({ entries }: SelectionToolbarProps) {
     setProgress(null);
   }
   return (
-    <div className="sticky top-0 z-10 flex flex-wrap items-center gap-3 border-b bg-white/95 p-3">
-      <span className="text-sm">{selected.size} selected</span>
-      <button
-        type="button"
-        onClick={() => selectAll(entries.map((entry) => entry.id))}
-        className="rounded border px-3 py-1 text-sm"
-      >
-        Select all
-      </button>
-      <button
-        type="button"
-        onClick={clear}
-        disabled={selected.size === 0}
-        className="rounded border px-3 py-1 text-sm disabled:opacity-40"
-      >
-        Clear
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          void startZip();
-        }}
-        disabled={chosen.length === 0 || progress !== null}
-        className="rounded bg-black px-3 py-1 text-sm text-white disabled:opacity-40"
-      >
-        Download {chosen.length > 0 ? chosen.length : ''} as zip
-      </button>
-      {progress ? <DownloadProgress progress={progress} /> : null}
-    </div>
+    <header className="sticky top-0 z-20 border-b border-zinc-800/80 bg-zinc-950/80 backdrop-blur-md">
+      <div className="mx-auto flex max-w-7xl flex-wrap items-center gap-x-4 gap-y-2 px-4 py-3">
+        <div className="mr-auto">
+          <h2 className="text-base font-semibold tracking-tight text-zinc-50">Photo Gallery</h2>
+          <p className="text-xs text-zinc-500">
+            {entries.length} photos
+            {chosen.length > 0 ? ` · ${chosen.length} selected` : ''}
+          </p>
+        </div>
+        {progress ? (
+          <DownloadProgress progress={progress} />
+        ) : (
+          <div className="flex items-center gap-2">
+            <button
+              type="button"
+              onClick={() => (allSelected ? clear() : selectAll(entries.map((entry) => entry.id)))}
+              className="rounded-full border border-zinc-700 px-4 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-zinc-500 hover:text-zinc-100"
+            >
+              {allSelected ? 'Clear all' : 'Select all'}
+            </button>
+            {chosen.length > 0 ? (
+              <button
+                type="button"
+                onClick={clear}
+                className="rounded-full border border-zinc-700 px-4 py-1.5 text-xs font-medium text-zinc-300 transition hover:border-zinc-500 hover:text-zinc-100"
+              >
+                Clear
+              </button>
+            ) : null}
+            <button
+              type="button"
+              onClick={() => {
+                void startZip();
+              }}
+              disabled={chosen.length === 0}
+              className="rounded-full bg-zinc-100 px-4 py-1.5 text-xs font-semibold text-zinc-900 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-30"
+            >
+              Download{chosen.length > 0 ? ` ${chosen.length}` : ''} as zip
+            </button>
+          </div>
+        )}
+      </div>
+    </header>
   );
 }

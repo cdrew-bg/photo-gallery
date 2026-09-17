@@ -1,7 +1,7 @@
 @import 'tailwindcss';
 
 :root {
-  color-scheme: light dark;
+  color-scheme: dark;
 }
 
 * {
@@ -15,11 +15,47 @@ body {
   font-family:
     system-ui,
     -apple-system,
+    'Segoe UI',
     sans-serif;
+  background-color: #09090b;
+  color: #f4f4f5;
+  -webkit-font-smoothing: antialiased;
 }
 
-main {
-  max-width: 48rem;
-  margin: 0 auto;
-  padding: 2rem;
+::selection {
+  background-color: #f4f4f5;
+  color: #09090b;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-up {
+  animation: fade-up 0.35s ease-out both;
+}
+
+progress {
+  appearance: none;
+  height: 4px;
+  border-radius: 9999px;
+  overflow: hidden;
+  background-color: #27272a;
+  border: none;
+}
+
+progress::-webkit-progress-bar {
+  background-color: #27272a;
+}
+
+progress::-webkit-progress-value {
+  background-color: #f4f4f5;
+  transition: width 0.2s ease;
 }

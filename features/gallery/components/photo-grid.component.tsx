@@ -10,20 +10,26 @@ export function PhotoGrid() {
   const query = useManifest();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   if (query.isPending) {
-    return <p className="p-4">Loading gallery…</p>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="animate-pulse text-sm tracking-wide text-zinc-500">Loading gallery…</p>
+      </div>
+    );
   }
   if (query.isError) {
     return (
-      <p role="alert" className="p-4">
-        Gallery unavailable
-      </p>
+      <div className="flex min-h-screen items-center justify-center">
+        <p role="alert" className="text-sm text-zinc-400">
+          Gallery unavailable — check your connection and refresh.
+        </p>
+      </div>
     );
   }
   const entries = query.data;
   return (
-    <div>
+    <div className="min-h-screen">
       <SelectionToolbar entries={entries} />
-      <ul className="grid grid-cols-2 gap-2 p-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      <ul className="fade-up mx-auto max-w-7xl columns-2 gap-3 px-3 pb-16 pt-4 sm:columns-3 sm:gap-4 sm:px-4 lg:columns-4">
         {entries.map((entry, index) => (
           <PhotoTile key={entry.id} entry={entry} onOpen={() => setOpenIndex(index)} />
         ))}
