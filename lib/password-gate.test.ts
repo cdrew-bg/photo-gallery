@@ -1,9 +1,11 @@
 import { createHash } from 'node:crypto';
-import { beforeAll, expect, it, vi } from 'vitest';
+import { afterEach, beforeAll, expect, it, vi } from 'vitest';
 import {
   hashPassword,
   readLockedSnapshot,
   readUnlockFlag,
+  readUnlockedAlbums,
+  readUnlockedAlbumsStr,
   subscribeUnlock,
   verifyPassword,
   writeUnlockFlag,
@@ -46,6 +48,26 @@ it('reports locked when storage is unavailable', () => {
 
 it('always reports locked for the server snapshot', () => {
   expect(readLockedSnapshot()).toBe(false);
+});
+
+afterEach(() => {
+  vi.unstubAllGlobals();
+});
+
+it('reads albums from localStorage when available', () => {
+  vi.stubGlobal('localStorage', {
+    getItem: (key: string) => (key === 'gallery-unlocked-friends' ? '1' : null),
+    setItem: () => {},
+  });
+  expect(readUnlockedAlbums().has('friends')).toBe(true);
+});
+
+it('serializes unlocked albums as comma-joined string in fixed order', () => {
+  vi.stubGlobal('localStorage', {
+    getItem: () => '1',
+    setItem: () => {},
+  });
+  expect(readUnlockedAlbumsStr()).toBe('family,friends');
 });
 
 it('unlocks in memory and notifies subscribers even without storage', () => {
