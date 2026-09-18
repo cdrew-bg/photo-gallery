@@ -28,6 +28,7 @@ export function PhotoGrid() {
     );
   }
   const entries = query.data.filter((entry) => {
+    if (unlockedAlbums.has('family')) return true;
     const { album } = entry;
     return album === undefined || unlockedAlbums.has(album);
   });
