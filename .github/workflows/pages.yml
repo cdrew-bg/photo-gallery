@@ -30,7 +30,8 @@ jobs:
       - run: pnpm build
         env:
           NEXT_PUBLIC_IMAGE_REPO_BASE: ${{ vars.NEXT_PUBLIC_IMAGE_REPO_BASE }}
-          NEXT_PUBLIC_GALLERY_PASSWORD_HASH: ${{ vars.NEXT_PUBLIC_GALLERY_PASSWORD_HASH }}
+          NEXT_PUBLIC_FAMILY_PASSWORD_HASH: ${{ vars.NEXT_PUBLIC_FAMILY_PASSWORD_HASH }}
+          NEXT_PUBLIC_FRIENDS_PASSWORD_HASH: ${{ vars.NEXT_PUBLIC_FRIENDS_PASSWORD_HASH }}
           NEXT_PUBLIC_BASE_PATH: ${{ vars.NEXT_PUBLIC_BASE_PATH }}
       - uses: actions/upload-pages-artifact@v3
         with:
