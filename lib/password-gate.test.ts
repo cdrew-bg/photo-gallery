@@ -9,24 +9,35 @@ import {
   writeUnlockFlag,
 } from './password-gate.service';
 
-const PASSWORD = 'open sesame';
+const FAMILY_PASSWORD = 'open sesame';
+const FRIENDS_PASSWORD = 'friends only';
 
 beforeAll(() => {
-  const hash = createHash('sha256').update(PASSWORD).digest('hex');
-  vi.stubEnv('NEXT_PUBLIC_GALLERY_PASSWORD_HASH', hash);
+  vi.stubEnv(
+    'NEXT_PUBLIC_FAMILY_PASSWORD_HASH',
+    createHash('sha256').update(FAMILY_PASSWORD).digest('hex'),
+  );
+  vi.stubEnv(
+    'NEXT_PUBLIC_FRIENDS_PASSWORD_HASH',
+    createHash('sha256').update(FRIENDS_PASSWORD).digest('hex'),
+  );
 });
 
 it('hashes a password to the sha-256 hex digest', async () => {
-  const expected = createHash('sha256').update(PASSWORD).digest('hex');
-  expect(await hashPassword(PASSWORD)).toBe(expected);
+  const expected = createHash('sha256').update(FAMILY_PASSWORD).digest('hex');
+  expect(await hashPassword(FAMILY_PASSWORD)).toBe(expected);
 });
 
-it('accepts the configured password', async () => {
-  expect(await verifyPassword(PASSWORD)).toBe(true);
+it('returns the album name when the family password matches', async () => {
+  expect(await verifyPassword(FAMILY_PASSWORD)).toBe('family');
 });
 
-it('rejects a wrong password', async () => {
-  expect(await verifyPassword('wrong')).toBe(false);
+it('returns the album name when the friends password matches', async () => {
+  expect(await verifyPassword(FRIENDS_PASSWORD)).toBe('friends');
+});
+
+it('returns null for a wrong password', async () => {
+  expect(await verifyPassword('wrong')).toBeNull();
 });
 
 it('reports locked when storage is unavailable', () => {
@@ -42,7 +53,7 @@ it('unlocks in memory and notifies subscribers even without storage', () => {
   const unsubscribe = subscribeUnlock(() => {
     notified = true;
   });
-  writeUnlockFlag();
+  writeUnlockFlag('family');
   expect(readUnlockFlag()).toBe(true);
   expect(notified).toBe(true);
   unsubscribe();

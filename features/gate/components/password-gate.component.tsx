@@ -22,8 +22,9 @@ export function PasswordGate({ children }: PasswordGateProps) {
   }
   async function submit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    if (await verifyPassword(input)) {
-      writeUnlockFlag();
+    const album = await verifyPassword(input);
+    if (album) {
+      writeUnlockFlag(album);
       return;
     }
     setRejected(true);

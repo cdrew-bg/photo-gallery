@@ -11,12 +11,12 @@ const EXIT_ERROR = 1;
 const ID_HASH_LENGTH = 12;
 const JSON_INDENT = 2;
 const USAGE =
-  'usage: node scripts/ingest.mjs --source <dir> --repo <image-repo-dir> [--push] [--force]';
+  'usage: node scripts/ingest.mjs --source <dir> --repo <image-repo-dir> --album <name> [--push] [--force]';
 
 const run = promisify(execFile);
 
 function parseArgs(argv) {
-  const args = { source: '', repo: '', push: false, force: false };
+  const args = { source: '', repo: '', album: '', push: false, force: false };
   for (let index = ARGS_OFFSET; index < argv.length; index += 1) {
     const arg = argv[index];
     if (arg === '--source') {
@@ -24,6 +24,9 @@ function parseArgs(argv) {
       index += 1;
     } else if (arg === '--repo') {
       args.repo = argv[index + 1] ?? '';
+      index += 1;
+    } else if (arg === '--album') {
+      args.album = argv[index + 1] ?? '';
       index += 1;
     } else if (arg === '--push') {
       args.push = true;
@@ -73,7 +76,10 @@ async function ingestNewSources({ args, manifest }) {
     if (known.has(id) && !args.force) {
       continue;
     }
-    const entry = await ingestFile({ sourcePath, repoDir: args.repo, id });
+    const entry = {
+      ...(await ingestFile({ sourcePath, repoDir: args.repo, id })),
+      album: args.album,
+    };
     const withoutStale = manifest.filter((existing) => existing.id !== entry.id);
     manifest.length = 0;
     manifest.push(...withoutStale, entry);
@@ -94,7 +100,7 @@ async function writeManifest({ repoDir, manifest }) {
 
 async function main() {
   const args = parseArgs(process.argv);
-  if (!args.source || !args.repo) {
+  if (!args.source || !args.repo || !args.album) {
     console.error(USAGE);
     process.exit(EXIT_ERROR);
   }

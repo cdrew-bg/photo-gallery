@@ -5,9 +5,11 @@ import { Lightbox } from './lightbox.component';
 import { PhotoTile } from './photo-tile.component';
 import { SelectionToolbar } from './selection-toolbar.component';
 import { useManifest } from '@/features/gallery/api/use-manifest.hook';
+import { useUnlockedAlbums } from '@/features/gate/api/use-unlocked-albums.hook';
 
 export function PhotoGrid() {
   const query = useManifest();
+  const unlockedAlbums = useUnlockedAlbums();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   if (query.isPending) {
     return (
@@ -25,7 +27,10 @@ export function PhotoGrid() {
       </div>
     );
   }
-  const entries = query.data;
+  const entries = query.data.filter((entry) => {
+    const { album } = entry;
+    return album === undefined || unlockedAlbums.has(album);
+  });
   return (
     <div className="min-h-screen">
       <SelectionToolbar entries={entries} />

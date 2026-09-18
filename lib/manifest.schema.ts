@@ -12,6 +12,7 @@ export const imageEntrySchema = z
     bytes: z.number().int().positive(),
     durationSeconds: z.number().positive().optional(),
     takenAt: z.string().datetime({ offset: true }),
+    album: z.string().min(1).optional(),
   })
   .strict();
 
